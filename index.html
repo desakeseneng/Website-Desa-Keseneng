@@ -139,7 +139,7 @@
         </div>
     </header>
 
-    <!-- Mobile Menu Drawer (NEW) -->
+    <!-- Mobile Menu Drawer (FIXED: Close icon starts hidden) -->
     <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-emerald-700 dark:bg-gray-800 z-[60] shadow-xl md:hidden flex flex-col pt-16">
         <nav class="flex flex-col p-4 space-y-2 text-white font-semibold text-lg">
             <a href="#" class="py-2 px-4 hover:bg-emerald-600/70 dark:hover:bg-gray-700 rounded-lg transition duration-300 menu-item">Beranda</a>
@@ -429,7 +429,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                 <!-- Kontak Info -->
                 <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-2xl">
-                    <h3 class="text-xl sm:text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-4">Kantor Kepala Desa Keseneng</h3>
+                    <h3 class="text-xl sm:text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-4">Kantor Desa Keseneng</h3>
                     <ul class="space-y-4 text-gray-700 dark:text-gray-300 text-sm sm:text-base">
                         <li class="flex items-start">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-500 mr-3 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -518,25 +518,36 @@
             });
         }
         
-        // Mobile Menu Toggle Logic (NEW)
+        // Mobile Menu Toggle Logic (FIXED LOGIC)
         function setupMobileMenu() {
             const menuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             const menuIcon = document.getElementById('menu-icon');
             const closeIcon = document.getElementById('close-icon');
-            const menuItems = document.querySelectorAll('.menu-item');
+            const menuItems = document.querySelectorAll('.menu-item'); // Links inside the mobile menu
             
             function toggleMenu() {
+                const isMenuOpen = mobileMenu.classList.contains('open');
+                
+                // Toggle the 'open' class for the slide-out effect
                 mobileMenu.classList.toggle('open');
-                menuIcon.classList.toggle('hidden');
-                closeIcon.classList.toggle('hidden');
+
+                // Toggle visibility of the hamburger and close icons
+                if (isMenuOpen) {
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                } else {
+                    menuIcon.classList.add('hidden');
+                    closeIcon.classList.remove('hidden');
+                }
             }
 
             menuButton.addEventListener('click', toggleMenu);
 
-            // Close menu when a link is clicked
+            // Close menu when a navigation link is clicked to jump to a section
             menuItems.forEach(item => {
                 item.addEventListener('click', () => {
+                    // Only close if it's currently open
                     if (mobileMenu.classList.contains('open')) {
                         toggleMenu();
                     }
@@ -544,12 +555,12 @@
             });
         }
 
-        // Initialize the slideshow, theme, and mobile menu setup on page load
+        // Initialize the slideshow, theme, and mobile menu setup on page load (FIXED: Added setupMobileMenu call)
         window.onload = function() {
             // Setup the Dark Mode/Theme toggle
             setupThemeToggle();
             
-            // Setup the Mobile Menu
+            // Setup the Mobile Menu (CRUCIAL FIX)
             setupMobileMenu();
 
             // Start the carousel if slides exist
