@@ -14,12 +14,12 @@
             scroll-behavior: smooth;
         }
         
-        /* New Styles for the Smooth Carousel */
+        /* Smooth Carousel Styles */
         .slide {
             position: absolute;
             inset: 0;
             opacity: 0;
-            transition: opacity 1.5s ease-in-out; /* Smooth transition duration */
+            transition: opacity 1.5s ease-in-out;
         }
         .slide.active {
             opacity: 1;
@@ -48,17 +48,17 @@
         /* Style for the Kades photo zoom fix */
         .kades-photo {
             object-fit: cover;
-            object-position: top; /* Ensures the top of the photo (face) is prioritized */
-            width: 14rem; /* w-56 */
-            height: 14rem; /* h-56 */
+            object-position: top;
+            width: 12rem; /* Adjusted for better mobile fit */
+            height: 12rem; /* Adjusted for better mobile fit */
         }
         @media (min-width: 768px) {
             .kades-photo {
-                width: 16rem; /* md:w-64 */
-                height: 16rem; /* md:h-64 */
+                width: 16rem;
+                height: 16rem;
             }
         }
-        /* New: Ensure Potency/Wisata images fit the circle */
+        /* Ensure Potency/Wisata images fit the circle */
         .potensi-image {
              object-fit: cover;
              width: 100%;
@@ -67,6 +67,15 @@
         }
         .potensi-image:hover {
             transform: scale(1.05);
+        }
+
+        /* Mobile Menu Custom Styling */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%); /* Start off-screen */
+        }
+        #mobile-menu.open {
+            transform: translateX(0); /* Slide in */
         }
     </style>
     <script>
@@ -86,16 +95,19 @@
 
     <!-- Header / Navigation -->
     <header class="sticky top-0 z-50 bg-emerald-600 shadow-lg dark:bg-gray-900 transition duration-500">
-        <div class="container mx-auto px-4 md:px-8 flex justify-between items-center h-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
             <div class="flex items-center">
-                <!-- 1. Logo Image Implementation -->
+                <!-- Logo Image -->
                 <img src="https://desakeseneng6.wordpress.com/wp-content/uploads/2025/11/806px-logo_kabupaten_semarang_slogan-768x693-1-1.png?w=768" 
                      alt="Lambang Kabupaten Semarang" 
                      class="h-9 w-9 mr-3 object-contain"
                      onerror="this.onerror=null; this.src='https://placehold.co/50x50/ffffff/000000?text=LOGO';"
                 >
-                <h1 class="text-2xl font-extrabold text-white">Desa Keseneng</h1>
+                <!-- Adjusted size for mobile -->
+                <h1 class="text-xl sm:text-2xl font-extrabold text-white">Desa Keseneng</h1>
             </div>
+            
+            <!-- Desktop Navigation -->
             <nav class="hidden md:flex space-x-2 text-white text-sm font-semibold">
                 <a href="#" class="py-2 px-4 hover:bg-white/10 rounded-full transition duration-300">Beranda</a>
                 <a href="#sambutan" class="py-2 px-4 hover:bg-white/10 rounded-full transition duration-300">Sambutan</a>
@@ -106,22 +118,42 @@
                 <a href="#idm" class="py-2 px-4 hover:bg-white/10 rounded-full transition duration-300">IDM</a>
                 <a href="#kontak" class="py-2 px-4 hover:bg-white/10 rounded-full transition duration-300">Kontak</a>
             </nav>
-            <!-- Dark Mode Toggle Button -->
-            <button id="theme-toggle" class="p-2 rounded-full text-white hover:bg-white/10 transition duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-            </button>
-            <!-- Mobile Menu Button (Hamburger) - Omitted for brevity, but functionality remains -->
-            <button class="md:hidden text-white p-2 focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-            </button>
+            
+            <!-- Dark Mode Toggle Button and Mobile Menu Button -->
+            <div class="flex items-center space-x-2">
+                <button id="theme-toggle" class="p-2 rounded-full text-white hover:bg-white/10 transition duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
+                <!-- Mobile Menu Button (Hamburger) -->
+                <button id="mobile-menu-button" class="md:hidden text-white p-2 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" id="menu-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" id="close-icon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- Hero Section with Slideshow (2. Updated Slideshow) -->
+    <!-- Mobile Menu Drawer (NEW) -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-emerald-700 dark:bg-gray-800 z-[60] shadow-xl md:hidden flex flex-col pt-16">
+        <nav class="flex flex-col p-4 space-y-2 text-white font-semibold text-lg">
+            <a href="#" class="py-2 px-4 hover:bg-emerald-600/70 dark:hover:bg-gray-700 rounded-lg transition duration-300 menu-item">Beranda</a>
+            <a href="#sambutan" class="py-2 px-4 hover:bg-emerald-600/70 dark:hover:bg-gray-700 rounded-lg transition duration-300 menu-item">Sambutan</a>
+            <a href="#visi-misi" class="py-2 px-4 hover:bg-emerald-600/70 dark:hover:bg-gray-700 rounded-lg transition duration-300 menu-item">Visi Misi</a>
+            <a href="#peta-desa" class="py-2 px-4 hover:bg-emerald-600/70 dark:hover:bg-gray-700 rounded-lg transition duration-300 menu-item">Peta Desa</a>
+            <a href="#potensi" class="py-2 px-4 hover:bg-emerald-600/70 dark:hover:bg-gray-700 rounded-lg transition duration-300 menu-item">Potensi Desa</a>
+            <a href="#infografis" class="py-2 px-4 hover:bg-emerald-600/70 dark:hover:bg-gray-700 rounded-lg transition duration-300 menu-item">Infografis</a>
+            <a href="#idm" class="py-2 px-4 hover:bg-emerald-600/70 dark:hover:bg-gray-700 rounded-lg transition duration-300 menu-item">IDM</a>
+            <a href="#kontak" class="py-2 px-4 hover:bg-emerald-600/70 dark:hover:bg-gray-700 rounded-lg transition duration-300 menu-item">Kontak</a>
+        </nav>
+    </div>
+
+    <!-- Hero Section with Slideshow -->
     <section id="hero" class="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gray-900 dark:bg-gray-950">
         <!-- Image Slideshow Container -->
         <div id="carousel" class="absolute inset-0">
@@ -146,29 +178,30 @@
         <div class="absolute inset-0 bg-black/50 dark:bg-black/70"></div>
 
         <div class="relative z-10 p-8">
-            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-4 drop-shadow-lg animate-fade-in-up">SELAMAT DATANG</h1>
-            <p class="text-xl md:text-2xl text-emerald-200 mb-8 drop-shadow-md">di Website Resmi Desa Keseneng</p>
+            <!-- Adjusted size for mobile -->
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-4 drop-shadow-lg animate-fade-in-up">SELAMAT DATANG</h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-emerald-200 mb-8 drop-shadow-md">di Website Resmi Desa Keseneng</p>
             <a href="#sambutan" class="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full shadow-xl transition duration-300 transform hover:scale-105">Jelajahi Website Desa Keseneng</a>
         </div>
     </section>
 
-    <!-- Sambutan Kepala Desa Section (Kades Zoom Fix applied here) -->
-    <section id="sambutan" class="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 transition duration-500">
-        <div class="container mx-auto px-4 md:px-8">
-            <h2 class="text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-12 border-b-4 border-emerald-500 inline-block px-4 pb-2">Sambutan Kepala Desa</h2>
-            <div class="flex flex-col md:flex-row items-center bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-8 lg:p-12 gap-8">
+    <!-- Sambutan Kepala Desa Section -->
+    <section id="sambutan" class="py-16 bg-gray-50 dark:bg-gray-800 transition duration-500">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-10 border-b-4 border-emerald-500 inline-block px-4 pb-2">Sambutan Kepala Desa</h2>
+            <div class="flex flex-col md:flex-row items-center bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 sm:p-8 lg:p-12 gap-6 md:gap-8">
                 <!-- Photo and Name -->
                 <div class="flex-shrink-0 text-center">
-<img src="https://desakeseneng6.wordpress.com/wp-content/uploads/2025/11/kades-edited.png" 
-     alt="Kepala Desa" 
-     class="kades-photo object-cover rounded-xl shadow-lg mx-auto mb-4 border-4 border-emerald-500"
-     onerror="this.onerror=null; this.src='https://placehold.co/250x250/10b981/ffffff?text=Kades+Tidak+Ditemukan';"
->
-<p class="text-2xl font-bold text-gray-800 dark:text-white">Maskuri</p>
-                    <p class="text-lg text-emerald-600 dark:text-emerald-400">Kepala Desa Keseneng</p>
+                    <img src="https://desakeseneng6.wordpress.com/wp-content/uploads/2025/11/kades-edited.png" 
+                         alt="Kepala Desa" 
+                         class="kades-photo object-cover rounded-xl shadow-lg mx-auto mb-4 border-4 border-emerald-500"
+                         onerror="this.onerror=null; this.src='https://placehold.co/250x250/10b981/ffffff?text=Kades+Tidak+Ditemukan';"
+                    >
+                    <p class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">Maskuri</p>
+                    <p class="text-base sm:text-lg text-emerald-600 dark:text-emerald-400">Kepala Desa Keseneng</p>
                 </div>
                 <!-- Sambutan Content -->
-                <div class="text-gray-700 dark:text-gray-300 leading-relaxed md:w-2/3">
+                <div class="text-gray-700 dark:text-gray-300 leading-relaxed md:w-2/3 text-sm sm:text-base">
                     <p class="mb-4 text-justify">
                        Assalamualaikum Warahmatullahi Wabarakatuh,<br>
                        Selamat datang di website resmi Desa Keseneng, sebuah portal informasi yang kami hadirkan sebagai wujud komitmen kami dalam menjalankan tata kelola pemerintahan yang transparan dan terbuka bagi seluruh warga, serta masyarakat luas. Desa Keseneng adalah rumah kita bersama, sebuah wilayah yang dianugerahi keindahan alam, tanah yang subur, serta masyarakat yang menjunjung tinggi nilai gotong royong dan kekeluargaan. 
@@ -188,25 +221,22 @@
 
 
     <!-- Visi Misi Section -->
-    <section id="visi-misi" class="py-16 md:py-24 bg-white dark:bg-gray-900 transition duration-500">
-        <div class="container mx-auto px-4 md:px-8">
-            <h2 class="text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-12 border-b-4 border-emerald-500 inline-block px-4 pb-2">Visi Misi Desa Keseneng</h2>
+    <section id="visi-misi" class="py-16 bg-white dark:bg-gray-900 transition duration-500">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-10 border-b-4 border-emerald-500 inline-block px-4 pb-2">Visi Misi Desa Keseneng</h2>
             
             <!-- Visi -->
-            <div class="mb-10 p-6 bg-emerald-50 dark:bg-gray-800 rounded-xl shadow-xl">
-                <h3 class="text-3xl font-bold text-center text-emerald-600 dark:text-emerald-400 mb-4">VISI</h3>
-                <p class="text-xl italic text-center text-gray-700 dark:text-gray-200">
+            <div class="mb-8 p-6 bg-emerald-50 dark:bg-gray-800 rounded-xl shadow-xl">
+                <h3 class="text-2xl sm:text-3xl font-bold text-center text-emerald-600 dark:text-emerald-400 mb-4">VISI</h3>
+                <p class="text-lg sm:text-xl italic text-center text-gray-700 dark:text-gray-200">
                     "Mewujudkan kehidupan masyarakat desa keseneng yang kondusif di dalam segala bidang dan segala lapisan"
                 </p>
             </div>
 
             <!-- Misi -->
             <div class="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-xl">
-                <h3 class="text-3xl font-bold text-center text-emerald-600 dark:text-emerald-400 mb-4">MISI</h3>
-                <!-- Text justification applied here -->
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify mb-4">
-                </p>
-                <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 pl-5">
+                <h3 class="text-2xl sm:text-3xl font-bold text-center text-emerald-600 dark:text-emerald-400 mb-4">MISI</h3>
+                <ul class="list-disc list-inside space-y-3 text-gray-700 dark:text-gray-300 pl-5 text-sm sm:text-base">
                     <li class="text-justify">Meningkatkan mutu pelayanan kepada masyarakat melalui penataan kelembagaan, Sumber Daya Manusia (SDM) perangkat desa, sarana dan prasarana.</li>
                     <li class="text-justify">Meningkatkan peran serta masyarakat dalam pembangunan desa.</li>
                     <li class="text-justify">Menciptakan kondisi yang harmonis, aman, tertib, dan damai dalam kehidupan masyarakat.</li>
@@ -218,71 +248,66 @@
     </section>
     
     <!-- PETA DESA Section (Map) -->
-    <section id="peta-desa" class="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 transition duration-500">
-        <div class="container mx-auto px-4 md:px-8 text-center">
-            <h2 class="text-4xl font-extrabold text-gray-800 dark:text-white mb-12 border-b-4 border-emerald-500 inline-block px-4 pb-2">Peta Wilayah Desa Keseneng</h2>
-            <div class="p-4 md:p-8 bg-white dark:bg-gray-900 rounded-xl shadow-2xl">
-                <p class="text-gray-600 dark:text-gray-300 text-lg mb-4">
+    <section id="peta-desa" class="py-16 bg-gray-50 dark:bg-gray-800 transition duration-500">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800 dark:text-white mb-10 border-b-4 border-emerald-500 inline-block px-4 pb-2">Peta Wilayah Desa Keseneng</h2>
+            <div class="p-4 bg-white dark:bg-gray-900 rounded-xl shadow-2xl">
+                <p class="text-gray-600 dark:text-gray-300 text-base sm:text-lg mb-4">
                     Visualisasi batas administrasi dan wilayah Desa Keseneng.
                 </p>
-                <!-- Embedded Google Map for general area -->
+                <!-- Map Container for Responsiveness -->
                 <div class="map-container">
-                    <!-- Generic map of the area - Replace with the correct coordinates if available -->
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15833.547384694786!2d110.27558573496454!3d-7.196626596137422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e707db2f4b0584b%3A0xee2247e9d671c643!2sKeseneng%2C%20Sumowono%2C%20Semarang%20Regency%2C%20Central%20Java!5e0!3m2!1sen!2sid!4v1762920326886!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15833.547384694786!2d110.27558573496454!3d-7.196626596137422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e707db2f4b0584b%3A0xee2247e9d671c643!2sKeseneng%2C%20Sumowono%2C%20Semarang%20Regency%2C%20Central%20Java!5e0!3m2!1sen!2sid!4v1762920326886!5m2!1sen!2sid" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- POTENSI UNGGULAN DESA Section (URLs WordPress sudah dimasukkan) -->
-    <section id="potensi" class="py-16 md:py-24 bg-white dark:bg-gray-900 transition duration-500">
-        <div class="container mx-auto px-4 md:px-8">
-            <h2 class="text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-12 border-b-4 border-emerald-500 inline-block px-4 pb-2">Potensi Unggulan Desa</h2>
-            <div class="flex flex-col md:flex-row justify-between items-start gap-10">
+    <!-- POTENSI UNGGULAN DESA Section (Flex changed to grid for better mobile stacking) -->
+    <section id="potensi" class="py-16 bg-white dark:bg-gray-900 transition duration-500">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-10 border-b-4 border-emerald-500 inline-block px-4 pb-2">Potensi Unggulan Desa</h2>
+            <!-- Changed flex to grid for responsive stacking -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 
-                <!-- Card 1: Potensi Pertanian - URL DARI WORDPRESS -->
-                <div class="w-full md:w-1/3 flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-2xl transition duration-500 hover:shadow-emerald-500/50">
-                    <div class="relative w-40 h-40 bg-emerald-500 rounded-full flex items-center justify-center mb-6 overflow-hidden circle-icon">
-                        <!-- HIGHLIGHT: URL Pertanian (dsc06188.jpg) -->
+                <!-- Card 1: Potensi Pertanian -->
+                <div class="flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-2xl transition duration-500 hover:shadow-emerald-500/50">
+                    <div class="relative w-32 h-32 sm:w-40 sm:h-40 bg-emerald-500 rounded-full flex items-center justify-center mb-6 overflow-hidden circle-icon">
                         <img src="https://desakeseneng6.wordpress.com/wp-content/uploads/2025/11/dsc06188.jpg?w=1024" 
                              alt="Potensi Pertanian" 
                              onerror="this.onerror=null; this.src='https://placehold.co/200x200/065f46/ffffff?text=FOTO+PERTANIAN';"
                              class="potensi-image absolute inset-0">
                     </div>
-                    <h3 class="text-2xl font-bold text-center text-gray-800 dark:text-emerald-400 mb-4">Potensi Pertanian</h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-center">
+                    <h3 class="text-xl sm:text-2xl font-bold text-center text-gray-800 dark:text-emerald-400 mb-3">Potensi Pertanian</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-center text-sm">
                         Lahan sawah dan perkebunan yang subur menjadi tulang punggung perekonomian. Komoditas unggulan adalah sayuran.
                     </p>
                 </div>
 
-                <!-- Card 2: BUMDes Maju Bersama (Menggunakan foto Perkebunan) - URL DARI WORDPRESS -->
-                <div class="w-full md:w-1/3 flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-2xl transition duration-500 hover:shadow-emerald-500/50">
-                    <div class="relative w-40 h-40 bg-emerald-500 rounded-full flex items-center justify-center mb-6 overflow-hidden circle-icon">
-                        <!-- HIGHLIGHT: URL Pertanian (dsc06188.jpg) -->
+                <!-- Card 2: Potensi Perkebunan -->
+                <div class="flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-2xl transition duration-500 hover:shadow-emerald-500/50">
+                    <div class="relative w-32 h-32 sm:w-40 sm:h-40 bg-emerald-500 rounded-full flex items-center justify-center mb-6 overflow-hidden circle-icon">
                         <img src="https://desakeseneng6.wordpress.com/wp-content/uploads/2025/11/dsc06166.jpg?w=1024" 
-                             alt="Potensi Pertanian" 
-                             onerror="this.onerror=null; this.src='https://placehold.co/200x200/065f46/ffffff?text=FOTO+PERTANIAN';"
+                             alt="Potensi Perkebunan" 
+                             onerror="this.onerror=null; this.src='https://placehold.co/200x200/065f46/ffffff?text=FOTO+PERKEBUNAN';"
                              class="potensi-image absolute inset-0">
                     </div>
-                    <h3 class="text-2xl font-bold text-center text-gray-800 dark:text-emerald-400 mb-4">Potensi Perkebunan</h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-center">
+                    <h3 class="text-xl sm:text-2xl font-bold text-center text-gray-800 dark:text-emerald-400 mb-3">Potensi Perkebunan</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-center text-sm">
                         Lahan perkebunan yang subur menjadi tulang punggung perekonomian. Komoditas unggulan adalah kopi.
                     </p>
                 </div>
 
-                <!-- Card 3: Kerajinan Anyaman (Masih Placeholder) -->
-                <div class="w-full md:w-1/3 flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-2xl transition duration-500 hover:shadow-emerald-500/50">
-                    <div class="relative w-40 h-40 bg-emerald-500 rounded-full flex items-center justify-center mb-6 overflow-hidden circle-icon">
-                        <!-- HIGHLIGHT: Masih Placeholder (Tidak ada link Kerajinan) -->
+                <!-- Card 3: Potensi Pariwisata -->
+                <div class="flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-2xl transition duration-500 hover:shadow-emerald-500/50">
+                    <div class="relative w-32 h-32 sm:w-40 sm:h-40 bg-emerald-500 rounded-full flex items-center justify-center mb-6 overflow-hidden circle-icon">
                         <img src="https://desakeseneng6.wordpress.com/wp-content/uploads/2025/11/whatsapp-image-2025-11-17-at-11.25.48-am.jpeg?w=576" 
-                             alt="Kerajinan Anyaman" 
-                             onerror="this.onerror=null; this.src='https://placehold.co/200x200/059669/ffffff?text=FOTO+KERAJINAN';"
+                             alt="Potensi Pariwisata" 
+                             onerror="this.onerror=null; this.src='https://placehold.co/200x200/059669/ffffff?text=FOTO+WISATA';"
                              class="potensi-image absolute inset-0">
                     </div>
-                    <h3 class="text-2xl font-bold text-center text-gray-800 dark:text-emerald-400 mb-4">Potensi Pariwisata</h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-center">
+                    <h3 class="text-xl sm:text-2xl font-bold text-center text-gray-800 dark:text-emerald-400 mb-3">Potensi Pariwisata</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-center text-sm">
                         Potensi pariwisata desa yang meliputi 2 objek wisata, yaitu Curug 7 Bidadari dan Curug PaleburGongso.
                     </p>
                 </div>
@@ -291,38 +316,37 @@
         </div>
     </section>
     
-    <!-- WISATA DESA SECTION (URLs WordPress sudah dimasukkan) -->
-    <section id="wisata-desa" class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 transition duration-500">
-        <div class="container mx-auto px-4 md:px-8">
-            <h2 class="text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-12 border-b-4 border-emerald-500 inline-block px-4 pb-2">Wisata Desa</h2>
-            <div class="flex flex-col md:flex-row justify-center items-stretch gap-10">
+    <!-- WISATA DESA SECTION (Flex changed to grid for better mobile stacking) -->
+    <section id="wisata-desa" class="py-16 bg-gray-50 dark:bg-gray-900 transition duration-500">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-10 border-b-4 border-emerald-500 inline-block px-4 pb-2">Wisata Desa</h2>
+            <!-- Changed flex to grid for responsive stacking -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center">
                 
-                <!-- Circle 1: Curug Tujuh Bidadari - URL DARI WORDPRESS -->
-                <div class="w-full md:w-1/3 flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-2xl transition duration-500 hover:shadow-emerald-500/50">
-                    <div class="relative w-48 h-48 sm:w-64 sm:h-64 bg-emerald-100 dark:bg-emerald-700 rounded-full flex items-center justify-center mb-6 overflow-hidden border-4 border-emerald-500">
-                        <!-- HIGHLIGHT: URL Curug Tujuh Bidadari -->
+                <!-- Circle 1: Curug Tujuh Bidadari -->
+                <div class="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-2xl transition duration-500 hover:shadow-emerald-500/50">
+                    <div class="relative w-40 h-40 sm:w-64 sm:h-64 bg-emerald-100 dark:bg-emerald-700 rounded-full flex items-center justify-center mb-6 overflow-hidden border-4 border-emerald-500">
                         <img src="https://desakeseneng6.wordpress.com/wp-content/uploads/2025/11/curug-tujuh-bidadari.jpg?w=1024" 
                              onerror="this.onerror=null;this.src='https://placehold.co/256x256/10b981/ffffff?text=CURUG+7+BIDADARI';" 
                              alt="Curug Tujuh Bidadari" 
                              class="potensi-image absolute inset-0">
                     </div>
-                    <h3 class="text-2xl font-bold text-center text-gray-800 dark:text-emerald-400 mb-4">Curug Tujuh Bidadari</h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-center">
+                    <h3 class="text-xl sm:text-2xl font-bold text-center text-gray-800 dark:text-emerald-400 mb-3">Curug Tujuh Bidadari</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-center text-sm">
                         Air terjun yang memiliki tiga tingkatan dan tujuh air terjun yang berbeda ukuran, dengan air yang masih bersih dan segar karena bersumber dari air pegunungan.
                     </p>
                 </div>
 
-                <!-- Circle 2: Curug Paleburgongso - URL DARI WORDPRESS -->
-                <div class="w-full md:w-1/3 flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-2xl transition duration-500 hover:shadow-emerald-500/50">
-                    <div class="relative w-48 h-48 sm:w-64 sm:h-64 bg-emerald-100 dark:bg-emerald-700 rounded-full flex items-center justify-center mb-6 overflow-hidden border-4 border-emerald-500">
-                        <!-- HIGHLIGHT: URL Curug Paleburgongso -->
+                <!-- Circle 2: Curug Paleburgongso -->
+                <div class="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-2xl transition duration-500 hover:shadow-emerald-500/50">
+                    <div class="relative w-40 h-40 sm:w-64 sm:h-64 bg-emerald-100 dark:bg-emerald-700 rounded-full flex items-center justify-center mb-6 overflow-hidden border-4 border-emerald-500">
                         <img src="https://desakeseneng6.wordpress.com/wp-content/uploads/2025/11/whatsapp-image-2025-11-17-at-11.25.48-am.jpeg?w=576" 
                              onerror="this.onerror=null;this.src='https://placehold.co/256x256/10b981/ffffff?text=CURUG+PALEBURGONSO';" 
                              alt="Curug Paleburgongso" 
                              class="potensi-image absolute inset-0">
                     </div>
-                    <h3 class="text-2xl font-bold text-center text-gray-800 dark:text-emerald-400 mb-4">Curug Paleburgongso</h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-center">
+                    <h3 class="text-xl sm:text-2xl font-bold text-center text-gray-800 dark:text-emerald-400 mb-3">Curug Paleburgongso</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-center text-sm">
                         Air Terjun Panglebur Gongso memiliki ketinggian hingga tujuh meter dan kolam alami dengan air jernih cukup luas, terdapat bebatuan di antara aliran sungainya.
                     </p>
                 </div>
@@ -331,60 +355,66 @@
     </section>
 
     <!-- INFOGRAFIS JUMLAH PENDUDUK Section -->
-    <section id="infografis" class="py-16 md:py-24 bg-white dark:bg-gray-800 transition duration-500">
-        <div class="container mx-auto px-4 md:px-8">
-            <h2 class="text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-12 border-b-4 border-emerald-500 inline-block px-4 pb-2">Infografis Jumlah Penduduk</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50 dark:bg-gray-900 p-8 rounded-xl shadow-2xl">
+    <section id="infografis" class="py-16 bg-white dark:bg-gray-800 transition duration-500">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-10 border-b-4 border-emerald-500 inline-block px-4 pb-2">Infografis Jumlah Penduduk</h2>
+            <!-- Grid columns remain 2 on mobile for density, but padding/text sizes adjusted -->
+            <div class="grid grid-cols-2 md:grid-cols-2 gap-4 sm:gap-8 bg-gray-50 dark:bg-gray-900 p-4 sm:p-8 rounded-xl shadow-2xl">
                 <!-- Data Card 1 -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl flex flex-col items-center">
-                    <h3 class="text-2xl font-semibold text-emerald-600 dark:text-emerald-400 mb-2">Total Penduduk</h3>
-                    <p class="text-5xl font-extrabold text-gray-900 dark:text-white">1.679</p>
-                    <p class="text-gray-500 dark:text-gray-400 mt-2">Jiwa (Data 2025)</p>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <h3 class="text-sm sm:text-xl font-semibold text-emerald-600 dark:text-emerald-400 mb-1">Total Penduduk</h3>
+                    <p class="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white">1.679</p>
+                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Jiwa (Data 2025)</p>
                 </div>
                 <!-- Data Card 2 -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl flex flex-col items-center">
-                    <h3 class="text-2xl font-semibold text-emerald-600 dark:text-emerald-400 mb-2">Laki-laki / Perempuan</h3>
-                    <p class="text-5xl font-extrabold text-gray-900 dark:text-white">842 / 837</p>
-                    <p class="text-gray-500 dark:text-gray-400 mt-2">Jiwa</p>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <h3 class="text-sm sm:text-xl font-semibold text-emerald-600 dark:text-emerald-400 mb-1">Laki-laki / Perempuan</h3>
+                    <p class="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white">842 / 837</p>
+                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Jiwa</p>
                 </div>
                 <!-- Data Card 3 -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl flex flex-col items-center">
-                    <h3 class="text-2xl font-semibold text-emerald-600 dark:text-emerald-400 mb-2">Kepala Keluarga</h3>
-                    <p class="text-5xl font-extrabold text-gray-900 dark:text-white">575</p>
-                    <p class="text-gray-500 dark:text-gray-400 mt-2">KK</p>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <h3 class="text-sm sm:text-xl font-semibold text-emerald-600 dark:text-emerald-400 mb-1">Kepala Keluarga</h3>
+                    <p class="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white">575</p>
+                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">KK</p>
                 </div>
                 <!-- Data Card 4 -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl flex flex-col items-center">
-                    <h3 class="text-2xl font-semibold text-emerald-600 dark:text-emerald-400 mb-2">RT / RW</h3>
-                    <p class="text-5xl font-extrabold text-gray-900 dark:text-white">12 / 5</p>
-                    <p class="text-gray-500 dark:text-gray-400 mt-2">Dari 3 Dusun</p>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <h3 class="text-sm sm:text-xl font-semibold text-emerald-600 dark:text-emerald-400 mb-1">RT / RW</h3>
+                    <p class="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white">12 / 5</p>
+                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Dari 3 Dusun</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- IDM Section -->
-    <section id="idm" class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 transition duration-500">
-        <div class="container mx-auto px-4 md:px-8 text-center">
-            <h2 class="text-4xl font-extrabold text-gray-800 dark:text-white mb-12 border-b-4 border-emerald-500 inline-block px-4 pb-2">Indeks Desa Membangun (IDM)</h2>
-            <div class="p-8 bg-white dark:bg-gray-800 rounded-xl shadow-2xl">
-                <p class="text-gray-600 dark:text-gray-300 text-lg mb-4">
+    <section id="idm" class="py-16 bg-gray-50 dark:bg-gray-900 transition duration-500">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800 dark:text-white mb-10 border-b-4 border-emerald-500 inline-block px-4 pb-2">Indeks Desa Membangun (IDM)</h2>
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 rounded-xl shadow-2xl">
+                <p class="text-gray-600 dark:text-gray-300 text-base sm:text-lg mb-4">
                     Desa Keseneng saat ini berada pada **Status Desa Berkembang**.
                 </p>
-                <div class="flex flex-col md:flex-row justify-around items-center space-y-4 md:space-y-0">
+                <!-- Changed flex-row to flex-col on mobile, with md:flex-row for desktop -->
+                <div class="flex flex-col space-y-4 md:flex-row justify-around items-center md:space-y-0">
                     <div class="text-center">
-                        <p class="text-xl font-semibold text-emerald-600 dark:text-emerald-400">IDM Skor</p>
-                        <p class="text-6xl font-extrabold text-gray-900 dark:text-white mt-1">0.6986</p>
+                        <p class="text-base sm:text-xl font-semibold text-emerald-600 dark:text-emerald-400">IDM Skor</p>
+                        <p class="text-4xl sm:text-6xl font-extrabold text-gray-900 dark:text-white mt-1">0.6986</p>
                     </div>
+                    <!-- Separator is hidden on mobile -->
+                    <div class="h-1 w-20 bg-gray-200 dark:bg-gray-700 block md:hidden"></div> 
                     <div class="h-20 w-1 bg-gray-200 dark:bg-gray-700 hidden md:block"></div>
                     <div class="text-center">
-                        <p class="text-xl font-semibold text-emerald-600 dark:text-emerald-400">Indeks Ketahanan Sosial</p>
-                        <p class="text-4xl font-extrabold text-gray-900 dark:text-white mt-1">0.8457</p>
+                        <p class="text-base sm:text-xl font-semibold text-emerald-600 dark:text-emerald-400">Indeks Ketahanan Sosial</p>
+                        <p class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mt-1">0.8457</p>
                     </div>
+                    <!-- Separator is hidden on mobile -->
+                    <div class="h-1 w-20 bg-gray-200 dark:bg-gray-700 block md:hidden"></div>
                     <div class="h-20 w-1 bg-gray-200 dark:bg-gray-700 hidden md:block"></div>
                     <div class="text-center">
-                        <p class="text-xl font-semibold text-emerald-600 dark:text-emerald-400">Indeks Ketahanan Ekonomi</p>
-                        <p class="text-4xl font-extrabold text-gray-900 dark:text-white mt-1">0.65</p>
+                        <p class="text-base sm:text-xl font-semibold text-emerald-600 dark:text-emerald-400">Indeks Ketahanan Ekonomi</p>
+                        <p class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mt-1">0.65</p>
                     </div>
                 </div>
             </div>
@@ -392,16 +422,17 @@
     </section>
 
     <!-- Kontak Section -->
-    <section id="kontak" class="py-16 md:py-24 bg-white dark:bg-gray-900 transition duration-500">
-        <div class="container mx-auto px-4 md:px-8">
-            <h2 class="text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-12 border-b-4 border-emerald-500 inline-block px-4 pb-2">Kontak Kami</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <section id="kontak" class="py-16 bg-white dark:bg-gray-900 transition duration-500">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-800 dark:text-white mb-10 border-b-4 border-emerald-500 inline-block px-4 pb-2">Kontak Kami</h2>
+            <!-- Adjusted grid to stack on mobile (1 column) and split on desktop (2 columns) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                 <!-- Kontak Info -->
                 <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-2xl">
-                    <h3 class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-4">Kantor Kepala Desa Keseneng</h3>
-                    <ul class="space-y-4 text-gray-700 dark:text-gray-300">
-                        <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <h3 class="text-xl sm:text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-4">Kantor Kepala Desa Keseneng</h3>
+                    <ul class="space-y-4 text-gray-700 dark:text-gray-300 text-sm sm:text-base">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-500 mr-3 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
@@ -422,12 +453,9 @@
                     </ul>
                 </div>
                 <!-- Peta Lokasi Kantor Desa (Map Added) -->
-                <div class="w-full h-80 shadow-2xl rounded-xl">
+                <div class="w-full h-72 sm:h-80 shadow-2xl rounded-xl">
                     <div class="map-container !p-0 !h-full">
-                        <!-- Specific map embed for the office location - Replace with the correct coordinates -->
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d989.5932555997933!2d110.29025036951464!3d-7.198211069015031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e707db17fd4f1a1%3A0xb788f34a1fdfde!2sDesa%20Keseneng!5e0!3m2!1sen!2sid!4v1762920522287!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d989.5932555997933!2d110.29025036951464!3d-7.198211069015031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e707db17fd4f1a1%3A0xb788f34a1fdfde!2sDesa%20Keseneng!5e0!3m2!1sen!2sid!4v1762920522287!5m2!1sen!2sid" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>
@@ -436,7 +464,7 @@
 
     <!-- Footer -->
     <footer class="bg-gray-800 dark:bg-gray-950 py-8">
-        <div class="container mx-auto px-4 md:px-8 text-center text-gray-400">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
             <p>&copy; 2025 Desa Keseneng. All rights reserved.</p>
             <p class="mt-2 text-sm">Dikembangkan oleh KKN UNNES GIAT 13 Desa Keseneng</p>
         </div>
@@ -445,7 +473,7 @@
     <script>
         // --- Core Functions for Theme and Carousel ---
 
-        // Slideshow/Carousel Logic (Based on your preferred code)
+        // Slideshow/Carousel Logic
         let slideIndex = 0;
         const slides = document.querySelectorAll("#carousel .slide");
 
@@ -489,11 +517,40 @@
                 }
             });
         }
+        
+        // Mobile Menu Toggle Logic (NEW)
+        function setupMobileMenu() {
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            function toggleMenu() {
+                mobileMenu.classList.toggle('open');
+                menuIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            }
 
-        // Initialize the slideshow and theme setup on page load
+            menuButton.addEventListener('click', toggleMenu);
+
+            // Close menu when a link is clicked
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    if (mobileMenu.classList.contains('open')) {
+                        toggleMenu();
+                    }
+                });
+            });
+        }
+
+        // Initialize the slideshow, theme, and mobile menu setup on page load
         window.onload = function() {
             // Setup the Dark Mode/Theme toggle
             setupThemeToggle();
+            
+            // Setup the Mobile Menu
+            setupMobileMenu();
 
             // Start the carousel if slides exist
             if (slides.length > 0) {
